@@ -28,13 +28,6 @@ class Gems
       
     end
     
-    def install!(dir)
-      # system "cd '#{dir}' && bundle install"
-      # raise "Failed to install bundle." if $?.exitstatus > 0
-      require 'bundler/cli'
-      Bundler::CLI.new.send(:update)
-    end
-    
     private
       def gems
         YAML.load(File.read(yaml_path))

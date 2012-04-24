@@ -11,8 +11,8 @@ class Build
       new("Release current branch").release_current_branch
     end
     
-    def release_with_latest_gems
-      new("Release with latest gems").release_with_latest_gems
+    def update_latest_gems
+      new("Update latest gems").update_latest_gems
     end
   end
   
@@ -29,7 +29,7 @@ class Build
     release_gem
   end
   
-  def release_with_latest_gems
+  def update_latest_gems
     validate_working_copy!
     Gems.update!
     
@@ -42,6 +42,8 @@ class Build
     commit("Updated internal gems.")
     push_current_branch
   end
+  
+  
   
   private
     def validate_working_copy!
