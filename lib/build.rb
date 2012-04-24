@@ -39,7 +39,7 @@ class Build
   end
   
   def commit_and_push_current_branch
-    commit("Updated bundle.")
+    commit("Updated bundle.") unless clean_staging_area?
     push_current_branch
   end
   
