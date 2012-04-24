@@ -32,6 +32,8 @@ class Build
     if merge_current_branch_into_master
       bump_version
       release_gem
+    else
+      abort("Already merged.")
     end
   end
   
