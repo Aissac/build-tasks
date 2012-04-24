@@ -32,18 +32,7 @@ class Build
   def update_latest_gems
     validate_working_copy!
     Gems.update!
-    
-    begin
-      Gems.install!(root)
-    rescue => e
-      abort(e)
-    end
-    
-    commit("Updated internal gems.")
-    push_current_branch
   end
-  
-  
   
   private
     def validate_working_copy!
