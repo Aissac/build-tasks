@@ -14,6 +14,10 @@ class Build
     def update_latest_gems
       new("Update latest gems").update_latest_gems
     end
+    
+    def push_current_branch
+      new("Push current branch").push_current_branch
+    end
   end
   
   def initialize(name)
