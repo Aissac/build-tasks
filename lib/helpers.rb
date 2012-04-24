@@ -1,5 +1,3 @@
-require 'ruby-debug'
-
 module Helpers
   def log(message)
     puts "[#{@name}] #{message}"
