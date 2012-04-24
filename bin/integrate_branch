@@ -4,5 +4,4 @@ set -e
 
 rake update_gems
 bundle install
-git commit -am "Updated private gems."
-rake push_current_branch
+rake commit_and_push_current_branch

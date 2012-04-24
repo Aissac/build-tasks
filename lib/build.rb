@@ -15,8 +15,8 @@ class Build
       new("Update latest gems").update_latest_gems
     end
     
-    def push_current_branch
-      new("Push current branch").push_current_branch
+    def commit_and_push_current_branch
+      new("Push current branch").commit_and_push_current_branch
     end
   end
   
@@ -36,6 +36,11 @@ class Build
   def update_latest_gems
     validate_working_copy!
     Gems.update!
+  end
+  
+  def commit_and_push_current_branch
+    commit("Updated bundle.")
+    push_current_branch
   end
   
   private
