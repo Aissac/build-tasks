@@ -1,8 +1,9 @@
-require 'git'
-
 module GitHelpers
   def git
-    @git ||= Git.open(root)
+    @git ||= begin
+      require 'git'
+      Git.open(root)
+    end
   end
   
   def master_heads_in_sync?

@@ -51,6 +51,7 @@ class Gems
     
     def git
       @git ||= begin
+        require 'git'
         begin
           Git.open(repo_path)
         rescue ArgumentError
