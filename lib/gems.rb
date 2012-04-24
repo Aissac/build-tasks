@@ -28,8 +28,8 @@ class Gems
       
     end
     
-    def install!
-      system "bundle install"
+    def install!(dir)
+      system "cd '#{dir}' && bundle install"
       raise "Failed to install bundle." if $?.exitstatus > 0
     end
     

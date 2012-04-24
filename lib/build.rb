@@ -34,7 +34,7 @@ class Build
     Gems.update!
     
     begin
-      Gems.install!
+      Gems.install!(root)
     rescue => e
       abort(e)
     end
