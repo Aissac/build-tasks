@@ -29,8 +29,9 @@ class Gems
     end
     
     def install!(dir)
-      system "cd '#{dir}' && bundle install"
-      raise "Failed to install bundle." if $?.exitstatus > 0
+      # system "cd '#{dir}' && bundle install"
+      # raise "Failed to install bundle." if $?.exitstatus > 0
+      Bundler::CLI.new.send(:update)
     end
     
     private
