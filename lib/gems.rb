@@ -106,9 +106,10 @@ class Gems
     
     def options
       {
-        :git => @config['git'],
-        :tag => @config['tag'],
-        :ref => @config['ref']
+        :git    => @config['git'],
+        :tag    => @config['tag'],
+        :ref    => @config['ref'],
+        :branch => @config['branch']
       }
     end
   end
