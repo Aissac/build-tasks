@@ -1,5 +1,6 @@
 require File.dirname(__FILE__) + '/helpers'
 require File.dirname(__FILE__) + '/git_helpers'
+require File.dirname(__FILE__) + '/gems'
 
 class Build
   include Helpers
@@ -9,6 +10,10 @@ class Build
     def release_current_branch
       new("Release current branch").release_current_branch
     end
+    
+    def release_with_latest_gems
+      new("Release with latest gems").release_with_latest_gems
+    end
   end
   
   def initialize(name)
@@ -16,10 +21,7 @@ class Build
   end
   
   def release_current_branch
-    abort("Do not run this on the master branch.") if master_branch_current?
-    abort("Uncommitted changes.") unless clean_staging_area?
-    abort("Master heads not in sync. Pull into master branch from origin/master.") unless master_heads_in_sync?
-    abort("Master branch not merged into current branch.") unless master_merged?
+    validate_working_copy!
     
     push_current_branch
     merge_current_branch_into_master
@@ -27,30 +29,51 @@ class Build
     release_gem
   end
   
-  def release_gem
-    rake 'git:release'
-  end
-  
-  def merge_current_branch_into_master
-    name = current_branch_name
-    git.checkout('master')
-    git.merge(name)
-  rescue Git::GitExecuteError => e
-    abort(e.message)
-  end
-  
-  def bump_version
-    rake 'version:bump:minor'
-    rake 'gemspec'
-    commit 'Regenerated gemspec.'
+  def release_with_latest_gems
+    validate_working_copy!
+    Gems.update!
+    
+    begin
+      Gems.install!
+    rescue => e
+      abort(e)
+    end
+    
+    commit("Updated internal gems.")
+    push_current_branch
   end
   
   private
+    def validate_working_copy!
+      abort("Do not run this on the master branch.") if master_branch_current?
+      abort("Uncommitted changes.") unless clean_staging_area?
+      abort("Master heads not in sync. Pull into master branch from origin/master.") unless master_heads_in_sync?
+      abort("Master branch not merged into current branch.") unless master_merged?
+    end
+    
+    def release_gem
+      rake 'git:release'
+    end
+  
+    def merge_current_branch_into_master
+      name = current_branch_name
+      git.checkout('master')
+      git.merge(name)
+    rescue Git::GitExecuteError => e
+      abort(e.message)
+    end
+  
+    def bump_version
+      rake 'version:bump:minor'
+      rake 'gemspec'
+      commit 'Regenerated gemspec.'
+    end
+  
     def rake(task)
       Rake::Task[task].invoke
     end
     
     def root
-      File.dirname(__FILE__) + "/../../"
+      File.expand_path File.dirname(__FILE__) + "/../../"
     end
 end

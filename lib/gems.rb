@@ -21,12 +21,16 @@ class Gems
           }
         end
         
-        path = File.expand_path File.dirname(__FILE__) + '/../../out.yml'
-        
-        File.open(path, 'w') do |f|
+        File.open(yaml_path, 'w') do |f|
           f.write YAML.dump(gem_versions)
         end
       end
+      
+    end
+    
+    def install!
+      system "bundle install"
+      raise "Failed to install bundle." if $?.exitstatus > 0
     end
     
     private
