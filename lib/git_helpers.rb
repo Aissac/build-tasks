@@ -35,8 +35,15 @@ module GitHelpers
   end
   
   def master_merged?
-    result = `git branch --merged`
-    result.split("\n").map {|s| s.strip}.include?('master')
+    branch_merged?('master')
   end
   
+  def branch_merged_into_master?(name)
+    branch_merged?(name)
+  end
+  
+  def branch_merged?(name)
+    result = `git branch --merged`
+    result.split("\n").map {|s| s.strip}.include?(name)
+  end
 end

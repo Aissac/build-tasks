@@ -28,9 +28,11 @@ class Build
     validate_working_copy!
     
     push_current_branch
-    merge_current_branch_into_master
-    bump_version
-    release_gem
+    
+    if merge_current_branch_into_master
+      bump_version
+      release_gem
+    end
   end
   
   def update_latest_gems
@@ -58,7 +60,12 @@ class Build
     def merge_current_branch_into_master
       name = current_branch_name
       git.checkout('master')
+      
+      return false if branch_merged_into_master?(name)
+      
       git.merge(name)
+      
+      true
     rescue Git::GitExecuteError => e
       abort(e.message)
     end
