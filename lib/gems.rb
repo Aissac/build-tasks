@@ -110,7 +110,8 @@ class Gems
         :git    => @config['git'],
         :tag    => @config['tag'],
         :ref    => @config['ref'],
-        :branch => @config['branch']
+        :branch => @config['branch'],
+        :path   => @config['path']
       }
     end
   end
